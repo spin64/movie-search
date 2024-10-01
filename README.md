@@ -1,4 +1,4 @@
-# my-vue2-app
+# Movie Search app
 
 ## Project setup
 ```
