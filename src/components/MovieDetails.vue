@@ -33,9 +33,8 @@ export default {
             movie: null,
         } 
     },
-    created() {
-        const apiKey = import.meta.env.VITE_API_KEY;
-        fetch(`http://www.omdbapi.com/?i=${this.movieId}&$apikey=${apiKey}`)
+    created() { 
+        fetch(`http://www.omdbapi.com/?i=${this.movieId}&apikey=${process.env.VUE_APP_API_KEY}`)
         .then(response => {
             if (!response.ok)throw new Error('Network response was not ok');
             return response.json();

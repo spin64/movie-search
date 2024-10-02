@@ -1,12 +1,15 @@
 <template>
-  <div class="container">
-    <div class="movie-card">
-      <img class="posterImage" :src="movie.Poster"/>
-      <router-link style="overflow-wrap: break-word;" v-bind:to="'/' + movie.imdbID">
+  <v-card elevation="2" outlined max-width="250px">
+    <v-img :src="movie.Poster" class="posterImage">
+      <router-link 
+        class="red lighten-5 pa-4 text-center"
+        style="position: absolute; bottom: 0; left: 0; right: 0;"
+        v-bind:to="'/' + movie.imdbID"
+      >
         {{ movie.Title }}
       </router-link>
-    </div>
-  </div>
+    </v-img>
+  </v-card>
 </template>
 
 <script>
@@ -18,28 +21,8 @@ export default {
 </script>
 
 <style scoped>
-  .container {
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-    flex-wrap: wrap;
-  }
-
-  .movie-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 1.625rem;
-    width: 250px;
-    height: 350px;
-    background-color: white;
-    box-shadow: 4px 4px 2px 1px;
-    padding: 10px;
-  }
-
   .posterImage {
-    width: 200px;
-    height: 300px;
+    width: 250px;
+    height: 450px;
   }
 </style>
