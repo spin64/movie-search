@@ -1,13 +1,10 @@
 <template>
   <v-card width="400" class="pa-4 ma-5 red mx-auto">
     <v-form @submit.prevent="handleSubmit">
-      <v-text-field v-model="searchQuery" label="Search For Movies..."></v-text-field>
+      <v-text-field v-model="searchQuery" color="white" label="Search For Movies..."></v-text-field>
     </v-form>
     <v-btn rounded white class="w-100 mr-2" @click="search">
       Search
-    </v-btn>
-    <v-btn rounded white class="w-100">
-      Filters
     </v-btn>
   </v-card>
 </template>

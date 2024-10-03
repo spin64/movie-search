@@ -4,7 +4,7 @@
       <router-link 
         class="red lighten-5 pa-4 text-center"
         style="position: absolute; bottom: 0; left: 0; right: 0;"
-        v-bind:to="'/' + movie.imdbID"
+        :to="'/' + movie.imdbID"
       >
         {{ movie.Title }}
       </router-link>

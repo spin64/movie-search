@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app-bar class="red" app>
-      <v-btn color="white" text>
-        <router-link to="/" class="white--text">Home</router-link>
+      <v-btn to="/" color="white" text>
+        Home
       </v-btn>
     </v-app-bar>
     <v-main class="red lighten-5">

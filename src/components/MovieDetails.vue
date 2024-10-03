@@ -1,8 +1,8 @@
 <template>
     <div v-if="movie">
-        <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center;" >
             <img :src="movie.Poster"/>
-            <div class="details-box">
+            <div class="details-box red lighten-4">
                 <h1>{{movie.Title}}</h1>
                 <div style="display: flex; align-items: center; gap:3px">
                     <p>{{movie.Year}}</p>
@@ -20,8 +20,12 @@
             </div>
         </div>     
     </div>
-    <div v-else>
-        <p>loading...</p>
+    <div class="loading-container" v-else>
+        <v-progress-circular 
+            color="red"
+            indeterminate
+            model-value="128">
+        </v-progress-circular>
     </div>
 </template>
 
@@ -71,5 +75,12 @@ export default {
         width: 30%;
         border-top-right-radius:1.625rem;
         border-bottom-right-radius:1.625rem;
+    }
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
     }
 </style>
