@@ -8,5 +8,5 @@
     <v-main class="red lighten-5">
       <router-view></router-view>
     </v-main>
-  </v-app>
+  </v-app>  
 </template>
