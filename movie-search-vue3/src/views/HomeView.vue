@@ -28,6 +28,7 @@
 import { ref } from 'vue';
 import SearchBar from '../components/SearchCard.vue';
 import MovieCard from '../components/MovieCard.vue';
+import movieService from '@/services/movieService.js'
 
 export default {
   components: {
@@ -40,30 +41,29 @@ export default {
     const totalPages = ref(0);
     const moviesList = ref([]);
 
-    // Define the function here
-    const getMoviesPerPage = async (searchQuery, pageNum) => {
-      try {
-        const response = await fetch(`http://www.omdbapi.com/?s=${searchQuery}&type=movie&apikey=${import.meta.env.VITE_API_KEY}&page=${pageNum}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const data = await response.json();
-        if (data) {
-          return data;
+    const getMoviesOnPage = async (searchQuery, pageNum) => {
+      return movieService.getMovies(searchQuery, pageNum)
+      .then((response) => {
+        // response.data.Search is the array of movies
+        if (response.data && response.data.Search) {
+          return response.data; 
         } else {
           console.error('No movies found');
-          return [];
+          return null;
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
-      }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error.message);
+        return null;
+      });
     };
+
 
     const getAllMovies = async (searchQuery) => {
       moviesList.value = [];
       currentPage.value = 1;
 
-      const firstPageData = await getMoviesPerPage(searchQuery, currentPage.value);
+      const firstPageData = await getMoviesOnPage(searchQuery, currentPage.value);
       if (firstPageData) {
         moviesList.value = firstPageData.Search;
         totalResults.value = firstPageData.totalResults;
@@ -74,7 +74,7 @@ export default {
         // Fetch additional pages
         const tempPages = Math.ceil(totalResults.value / 10);
         for (let page = 2; page <= tempPages; page++) {
-          const nextPageData = await getMoviesPerPage(searchQuery, page);
+          const nextPageData = await getMoviesOnPage(searchQuery, page);
           if (nextPageData) {
             moviesList.value = [...moviesList.value, ...nextPageData.Search];
           }
@@ -100,5 +100,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
