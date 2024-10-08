@@ -1,0 +1,15 @@
+{
+    "abbreviation": "FR",
+    "home": "Accueil",
+    "french": "FR",
+    "english": "EN",
+    "search": "Recherche",
+    "searchFor": "Rechercher Des Films...",
+    "details": {
+        "rated": "Classé",
+        "genres": "Genres",
+        "director": "Réalisateur",
+        "actors": "Acteurs",
+        "summary": "Résumé"
+    }
+}

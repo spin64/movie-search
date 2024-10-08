@@ -1,6 +1,6 @@
 <template>
   <div v-if="movie">
-    <div style="display: flex; justify-content: center;" >
+    <div class="ma-4" style="display: flex; justify-content: center;" >
       <img :src="movie.Poster"/>
       <div class="details-box red lighten-4">
         <h1>{{movie.Title}}</h1>
@@ -9,12 +9,12 @@
           <p>•</p>
           <p>{{durationInHoursAndMinutes}}</p>
         </div>
-        <p>Rated: {{movie.Rated}}</p>
-        <p>Genres: {{movie.Genre}}</p>
-        <p>Director: {{movie.Director}}</p>
-        <p>Actors: {{movie.Actors}}</p>
+        <p>{{$t('details.rated')}}: {{movie.Rated}}</p>
+        <p>{{$t('details.genres')}}: {{movie.Genre}}</p>
+        <p>{{$t('details.director')}}: {{movie.Director}}</p>
+        <p>{{$t('details.actors')}}: {{movie.Actors}}</p>
         <details>
-          <summary>Summary</summary>
+          <summary>{{$t('details.summary')}}</summary>
           <p>{{movie.Plot}}</p>
         </details>
       </div>
@@ -48,7 +48,6 @@ export default {
         console.error('Error fetching data:', error.message);
       });
     };
-
 
     onMounted(async () => {
       fetchMovie(route.params.id)

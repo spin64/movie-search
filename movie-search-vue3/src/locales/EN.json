@@ -1,0 +1,13 @@
+{
+    "abbreviation": "EN",
+    "home": "Home",
+    "search": "Search",
+    "searchFor": "Search For Movies...",
+    "details":{
+        "rated": "Rated",
+        "genres": "Genres",
+        "director": "Director",
+        "actors": "Actors",
+        "summary": "Summary"
+    }
+}
