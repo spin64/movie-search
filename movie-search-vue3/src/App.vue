@@ -4,6 +4,9 @@
       <v-btn to="/" text>
         {{ $t('home') }}
       </v-btn>
+      <v-btn to="/Logs" text>
+        {{ $t('Logs') }}
+      </v-btn>
       <v-spacer></v-spacer>
       <v-menu>
         <template v-slot:activator="{ props }">

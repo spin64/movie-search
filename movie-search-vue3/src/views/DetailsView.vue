@@ -33,6 +33,7 @@
 import { ref, onMounted, computed  } from 'vue';
 import { useRoute } from 'vue-router';
 import movieService from '@/services/movieService.js'
+import axios from 'axios';
 
 export default {
   setup() {
@@ -48,6 +49,7 @@ export default {
         console.error('Error fetching data:', error.message);
       });
     };
+
 
     onMounted(async () => {
       fetchMovie(route.params.id)
