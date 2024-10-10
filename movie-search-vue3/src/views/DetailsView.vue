@@ -41,15 +41,9 @@ export default {
     const movie = ref(null);
 
     const fetchMovie = async (movieId) => {
-      movieService.getMoviesById(movieId)
-      .then((response) => {
-        movie.value = response.data;
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error.message);
-      });
+      const temp = await movieService.getMoviesById(movieId)
+      movie.value = temp
     };
-
 
     onMounted(async () => {
       fetchMovie(route.params.id)

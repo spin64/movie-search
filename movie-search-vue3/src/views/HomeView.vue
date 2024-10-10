@@ -1,9 +1,9 @@
 <template>
   <div>
-    <SearchBar @search-for-movies="getAllMovies"/>
+    <SearchBar @search-for-movies="getMoviesOnPage"/>
     <v-container>
       <v-row class="d-flex justify-center">
-        <v-col v-for="movie in moviesOnPage(currentPage)" :key="movie.imdbID" cols="12" sm="6" md="4" lg="2" bg-black-lighten-5 >
+        <v-col v-for="movie in moviesList" :key="movie.imdbID" cols="12" sm="6" md="4" lg="2" bg-black-lighten-5>
           <MovieCard :movie="movie" />
         </v-col>
       </v-row>
@@ -13,7 +13,7 @@
         v-model="currentPage"
         :length="totalPages"
         :total-visible="5"
-        class="pa-4"  
+        class="pa-4"
         color="black"
         next-icon="mdi-menu-right"
         prev-icon="mdi-menu-left"
@@ -30,6 +30,7 @@ import axios from 'axios';
 import SearchBar from '../components/SearchCard.vue';
 import MovieCard from '../components/MovieCard.vue';
 import movieService from '@/services/movieService.js'
+import logService from '@/services/logService.js'
 
 export default {
   components: {
@@ -41,78 +42,44 @@ export default {
     const totalResults = ref(0);
     const totalPages = ref(0);
     const moviesList = ref([]);
+    const searchQuery = ref('');
 
-    const getMoviesOnPage = async (searchQuery, pageNum) => {
-      return movieService.getMovies(searchQuery, pageNum)
-      .then((response) => {
-        // response.data.Search is the array of movies
-        if (response.data && response.data.Search) {
-          return response.data; 
-        } else {
-          console.error('No movies found');
-          return null;
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error.message);
-        return null;
-      });
-    };
+    const getMoviesOnPage = async (query, sendLog) => {
+      searchQuery.value = query || searchQuery.value;
+      const temp = await movieService.getMovies(searchQuery.value, currentPage.value);
+      moviesList.value = temp.Search;
+      totalResults.value = temp.totalResults;
 
+      totalPages.value = Math.ceil(totalResults.value / 10);
 
-    const getAllMovies = async (searchQuery) => {
-      moviesList.value = [];
-      currentPage.value = 1;
-
-      const firstPageData = await getMoviesOnPage(searchQuery, currentPage.value);
-      if (firstPageData) {
-        moviesList.value = firstPageData.Search;
-        totalResults.value = firstPageData.totalResults;
-
-        // Calculate total pages for pagination
-        totalPages.value = Math.ceil(totalResults.value / 12);
-
-        // Fetch additional pages
-        const tempPages = Math.ceil(totalResults.value / 10);
-        for (let page = 2; page <= tempPages; page++) {
-          const nextPageData = await getMoviesOnPage(searchQuery, page);
-          if (nextPageData) {
-            moviesList.value = [...moviesList.value, ...nextPageData.Search];
-          }
-        }
-
-        await AddLogs(searchQuery, totalResults.value);
-      } else {
-        await AddLogs(searchQuery, 0);
+      // dont want to send a log when we change pages
+      if (sendLog){
+        createLog()
       }
     };
 
-    const moviesOnPage = (pageNum) => {
-      const startIndex = (pageNum - 1) * 12;
-      return moviesList.value.slice(startIndex, startIndex + 12);
+    const createLog = async () => {
+      const dataToLog = {
+        id: 0,
+        movieTitle: searchQuery.value,
+        numOfResults: totalResults.value,
+        queryDate: new Date().toISOString().toLocaleString(),
+      };
+
+      logService.addLogs(dataToLog);
     };
 
-    const AddLogs = async (searchQuery,results) => {
-      try {
-        const response = await axios.post(import.meta.env.VITE_DB_POST_API, {
-          "id": 0,
-          "movieTitle": searchQuery,
-          "numOfResults": results,
-          "queryDate": new Date().toISOString().toLocaleString()
-        });
-        console.log('Response:', response.data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+    // want to fetch a differnt pages' movie when pagination changes page number
+    watch(currentPage, () => {
+      getMoviesOnPage(searchQuery.value, false); 
+    });
 
     return {
       currentPage,
-      totalResults,
       totalPages,
       moviesList,
-      getAllMovies,
-      moviesOnPage,
+      getMoviesOnPage,
+      searchQuery,
     };
   },
 };

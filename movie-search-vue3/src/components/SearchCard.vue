@@ -21,10 +21,13 @@ export default {
     const searchQuery = ref('');
 
     const search = () => {
-      emit('search-for-movies', searchQuery.value);
+      emit('search-for-movies', searchQuery.value, true);
     };
 
-    return { searchQuery, search };
+    return { 
+      searchQuery, 
+      search 
+    };
   }
 };
 </script>

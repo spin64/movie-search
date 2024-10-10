@@ -8,26 +8,26 @@ namespace MovieSearchLogs.Controllers
     [ApiController]
     public class LogsController : ControllerBase
     {
-        private readonly LogContext logContext;
+        readonly LogContext _logContext;
 
         public LogsController(LogContext logContext)
         {
-            this.logContext = logContext;
+            this._logContext = logContext;
         }
 
         [HttpGet]
         [Route("GetLogs")]
         public IActionResult GetLogs()
         {
-            return Ok(logContext.Logs.ToList());
+            return Ok(_logContext.Logs.ToList());
         }
 
         [HttpPost]
         [Route("AddLog")]
         public async Task<IActionResult> AddLog(Log log)
         {
-            logContext.Logs.Add(log); 
-            await logContext.SaveChangesAsync();
+            _logContext.Logs.Add(log); 
+            await _logContext.SaveChangesAsync();
             return Ok("log added");
         }
     }

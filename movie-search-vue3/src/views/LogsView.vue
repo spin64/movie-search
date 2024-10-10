@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import logService from '@/services/logService.js'
 import { ref, onMounted } from 'vue';
 
 export default {
@@ -38,16 +38,8 @@ export default {
     const logs = ref([]);
       
     const fetchLogs = async () => {
-      try {
-        const response = await axios.get(import.meta.env.VITE_DB_GET_API, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        logs.value = [...logs.value, ...response.data];
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      const tempLogs = await logService.getLogs()
+      logs.value = tempLogs
     };
 
     const formatDate = (timestamp) => {
