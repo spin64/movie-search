@@ -6,8 +6,9 @@ namespace MovieSearchLogs.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ImdbId { get; set; }
+        [Required]
         public string movieTitle { get; set; }
+        public int numOfResults { get; set; }
         public DateTime queryDate { get; set; }
     }
 }

@@ -1,7 +1,11 @@
 <template>
-  <v-card width="400" class="pa-4 ma-5 bg-red mx-auto">
-    <v-form>
-      <v-text-field v-model="searchQuery" color="white" :label="$t('searchFor')"  />
+  <v-card width="400" class="pa-4 ma-5 bg-black mx-auto">
+    <v-form @submit.prevent="search">
+      <v-text-field 
+        v-model="searchQuery" 
+        color="white" 
+        :label="$t('searchFor')"  
+        @keydown.enter="search"/>
     </v-form>
     <v-btn rounded white class="w-100 mr-2" @click="search">
       {{ $t('search') }}

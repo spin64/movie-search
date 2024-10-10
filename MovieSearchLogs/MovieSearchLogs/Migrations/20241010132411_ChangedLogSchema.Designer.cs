@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieSearchLogs.Models;
 
@@ -11,9 +12,10 @@ using MovieSearchLogs.Models;
 namespace MovieSearchLogs.Migrations
 {
     [DbContext(typeof(LogContext))]
-    partial class LogContextModelSnapshot : ModelSnapshot
+    [Migration("20241010132411_ChangedLogSchema")]
+    partial class ChangedLogSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,10 +32,7 @@ namespace MovieSearchLogs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("movieTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("numOfResults")
+                    b.Property<int>("ImdbId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("queryDate")

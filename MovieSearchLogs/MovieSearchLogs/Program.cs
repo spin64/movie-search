@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContext<LogContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbCon")));
+builder.Services.AddDbContext<LogContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

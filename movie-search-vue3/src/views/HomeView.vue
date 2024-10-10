@@ -3,7 +3,7 @@
     <SearchBar @search-for-movies="getAllMovies"/>
     <v-container>
       <v-row class="d-flex justify-center">
-        <v-col v-for="movie in moviesOnPage(currentPage)" :key="movie.imdbID" cols="12" sm="6" md="4" lg="2" bg-red-lighten-5 >
+        <v-col v-for="movie in moviesOnPage(currentPage)" :key="movie.imdbID" cols="12" sm="6" md="4" lg="2" bg-black-lighten-5 >
           <MovieCard :movie="movie" />
         </v-col>
       </v-row>
@@ -14,7 +14,7 @@
         :length="totalPages"
         :total-visible="5"
         class="pa-4"  
-        color="red"
+        color="black"
         next-icon="mdi-menu-right"
         prev-icon="mdi-menu-left"
         first-icon="mdi-page-first"
@@ -25,7 +25,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import axios from 'axios';
 import SearchBar from '../components/SearchCard.vue';
 import MovieCard from '../components/MovieCard.vue';
 import movieService from '@/services/movieService.js'
@@ -79,12 +80,30 @@ export default {
             moviesList.value = [...moviesList.value, ...nextPageData.Search];
           }
         }
+
+        await AddLogs(searchQuery, totalResults.value);
+      } else {
+        await AddLogs(searchQuery, 0);
       }
     };
 
     const moviesOnPage = (pageNum) => {
       const startIndex = (pageNum - 1) * 12;
       return moviesList.value.slice(startIndex, startIndex + 12);
+    };
+
+    const AddLogs = async (searchQuery,results) => {
+      try {
+        const response = await axios.post(import.meta.env.VITE_DB_POST_API, {
+          "id": 0,
+          "movieTitle": searchQuery,
+          "numOfResults": results,
+          "queryDate": new Date().toISOString().toLocaleString()
+        });
+        console.log('Response:', response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
 
     return {

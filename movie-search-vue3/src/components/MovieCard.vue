@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex justify-center bg-red-lighten-4 rounded-lg" >
+  <div class="d-flex justify-center border-md rounded-lg" >
     <v-img :src="movie.Poster" :width="250" :height="400" class="rounded-lg">
       <router-link 
-        class="bg-red-lighten-4 pa-4 text-center"
+        class="bg-white pa-4 text-center"
         style="position: absolute; bottom: 0; left: 0; right: 0;"
         :to="'/' + movie.imdbID"
       >

@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar class="bg-red" app>
+    <v-app-bar class="bg-black" app>
       <v-btn to="/" text>
         {{ $t('home') }}
       </v-btn>
       <v-btn to="/Logs" text>
-        {{ $t('Logs') }}
+        {{ $t('logs') }}
       </v-btn>
       <v-spacer></v-spacer>
       <v-menu>
@@ -28,7 +28,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main class="bg-red-lighten-5">
+    <v-main class="bg-black-lighten-5">
       <router-view></router-view>
     </v-main>
   </v-app>

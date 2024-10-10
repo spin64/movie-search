@@ -17,18 +17,18 @@ namespace MovieSearchLogs.Controllers
 
         [HttpGet]
         [Route("GetLogs")]
-        public List<Log> GetLogs()
+        public IActionResult GetLogs()
         {
-            return logContext.Logs.ToList();
+            return Ok(logContext.Logs.ToList());
         }
 
         [HttpPost]
         [Route("AddLog")]
-        public string AddLog(Log log)
+        public async Task<IActionResult> AddLog(Log log)
         {
             logContext.Logs.Add(log); 
-            logContext.SaveChanges();
-            return "log added";
+            await logContext.SaveChangesAsync();
+            return Ok("log added");
         }
     }
 }
