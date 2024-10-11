@@ -1,5 +1,5 @@
 <template>
-  <v-table density="compact">
+  <v-table v-if="logs" density="compact">
     <thead>
       <tr>
         <th class="text-left">
@@ -27,6 +27,13 @@
       </tr>
     </tbody>
   </v-table>
+  <div v-else class="loading-container">
+    <v-progress-circular 
+      color="black"
+      indeterminate
+      model-value="128">
+    </v-progress-circular>
+  </div>
 </template>
 
 <script>
@@ -37,11 +44,6 @@ export default {
   setup() {
     const logs = ref([]);
       
-    const fetchLogs = async () => {
-      const tempLogs = await logService.getLogs()
-      logs.value = tempLogs
-    };
-
     const formatDate = (timestamp) => {
       const date = new Date(timestamp);
       const timeString = date.toLocaleTimeString('en-US', {
@@ -54,8 +56,8 @@ export default {
       return date.getUTCDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()  + " " + timeString;
     };
 
-    onMounted(() => {
-      fetchLogs();
+    onMounted(async () => {
+      logs.value = await logService.getLogs()
     });
 
     return {

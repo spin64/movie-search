@@ -45,7 +45,7 @@ export default {
     const searchQuery = ref('');
 
     const getMoviesOnPage = async (query, sendLog) => {
-      searchQuery.value = query || searchQuery.value;
+      searchQuery.value = query;
       const temp = await movieService.getMovies(searchQuery.value, currentPage.value);
       moviesList.value = temp.Search;
       totalResults.value = temp.totalResults;

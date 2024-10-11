@@ -11,15 +11,14 @@ import '@mdi/font/css/materialdesignicons.css';
 
 import { getMessages } from './locales/languages.js'; 
 
-
 const messages = getMessages();
 
 const app = createApp(App);
 
 const i18n = createI18n({
     legacy: false,
-    locale: 'en',
-    fallbackLocale: 'fr',
+    locale: 'EN',
+    fallbackLocale: 'EN',
     messages,
 });
 

@@ -22,7 +22,7 @@
   </div>
   <div v-else class="loading-container">
     <v-progress-circular 
-      color="red"
+      color="black"
       indeterminate
       model-value="128">
     </v-progress-circular>
@@ -40,13 +40,8 @@ export default {
     const route = useRoute();
     const movie = ref(null);
 
-    const fetchMovie = async (movieId) => {
-      const temp = await movieService.getMoviesById(movieId)
-      movie.value = temp
-    };
-
     onMounted(async () => {
-      fetchMovie(route.params.id)
+      movie.value = await movieService.getMoviesById(route.params.id)
     });
    
     const durationInHoursAndMinutes = computed(() => {
