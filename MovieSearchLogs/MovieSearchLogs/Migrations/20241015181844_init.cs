@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MovieSearchLogs.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,8 +15,8 @@ namespace MovieSearchLogs.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImdbId = table.Column<int>(type: "int", nullable: false),
-                    movieTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    movieTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    numOfResults = table.Column<int>(type: "int", nullable: false),
                     queryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

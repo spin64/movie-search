@@ -3,6 +3,8 @@ using MovieSearchLogs.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>
@@ -12,6 +14,11 @@ builder.Services.AddCors(options =>
                      .AllowAnyMethod();
     });
 });
+
+var connectionString = builder.Configuration.GetConnectionString("DbCon")
+                        .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"));
+
+Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<LogContext>();
 

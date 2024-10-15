@@ -12,8 +12,8 @@ using MovieSearchLogs.Models;
 namespace MovieSearchLogs.Migrations
 {
     [DbContext(typeof(LogContext))]
-    [Migration("20241010132411_ChangedLogSchema")]
-    partial class ChangedLogSchema
+    [Migration("20241015181844_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,11 @@ namespace MovieSearchLogs.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ImdbId")
+                    b.Property<string>("movieTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("numOfResults")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("queryDate")

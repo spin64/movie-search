@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieSearchLogs.Models;
 
-
 namespace MovieSearchLogs.Controllers
 {
     [Route("api/[controller]")]
@@ -26,7 +25,7 @@ namespace MovieSearchLogs.Controllers
         [Route("AddLog")]
         public async Task<IActionResult> AddLog(Log log)
         {
-            _logContext.Logs.Add(log); 
+            _logContext.Logs.Add(log);
             await _logContext.SaveChangesAsync();
             return Ok("log added");
         }
