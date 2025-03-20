@@ -1,26 +1,74 @@
 trigger:
-- main  # Adjust based on your branch name
+  branches:
+    include:
+      - main
+      - dev
 
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: 'latest'
+variables:
+  buildId: $(Build.BuildId)
 
-- script: |
-    docker-compose -f docker-compose.yml build
-  displayName: 'Build Docker Images'
+stages:
+- stage: Build
+  displayName: 'Build and Package Artifacts'
+  jobs:
+  - job: Build_Backend
+    displayName: 'Build .NET API'
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '6.0'
 
-- script: |
-    docker-compose -f docker-compose.yml up -d
-  displayName: 'Run Docker Containers'
+    - script: |
+        cd MovieSearchLogs
+        dotnet restore
+        dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)/backend
+      displayName: 'Publish .NET API'
 
-- script: |
-    docker-compose ps
-  displayName: 'List Running Containers'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/backend'
+        artifactName: 'backend-artifact'
 
-- script: |
-    docker-compose down
-  displayName: 'Stop and Remove Containers'
+  - job: Build_Frontend
+    displayName: 'Build Vue Frontend'
+    steps:
+    - script: |
+        cd movie-search-vue3
+        npm install
+        npm run build
+        mkdir -p $(Build.ArtifactStagingDirectory)/frontend
+        cp -r dist/* $(Build.ArtifactStagingDirectory)/frontend
+      displayName: 'Build Vue App'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/frontend'
+        artifactName: 'frontend-artifact'
+
+  - job: Package_Docker
+    displayName: 'Package Docker Images'
+    steps:
+    - task: Docker@2
+      displayName: 'Build Backend Docker Image'
+      inputs:
+        command: build
+        dockerfile: ./MovieSearchLogs/Dockerfile
+        buildContext: .
+        tags: 'backend:$(buildId)'
+
+    - task: Docker@2
+      displayName: 'Build Frontend Docker Image'
+      inputs:
+        command: build
+        dockerfile: ./movie-search-vue3/Dockerfile
+        buildContext: .
+        tags: 'frontend:$(buildId)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/docker'
+        artifactName: 'docker-artifact'
