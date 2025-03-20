@@ -1,35 +1,26 @@
 trigger:
-  - main
+- main  # Adjust based on your branch name
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  DB_PASSWORD: '$(dbPassword)'
+steps:
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: 'latest'
 
-stages:
-  - stage: Build
-    jobs:
-      - job: BuildAndPush
-        steps:
-        - checkout: self
-          
-        - task: Docker@2
-          displayName: 'Build web image'
-          inputs:
-            command: build
-            dockerfile: './movie-search-vue3/Dockerfile'
-            repository: '$(dockerRegistry)/movie-search-web'
-            tags: |
-              $(Build.BuildId)
-              latest
-              
-        - task: Docker@2
-          displayName: 'Build API image'
-          inputs:
-            command: build
-            dockerfile: './MovieSearchLogs/Dockerfile'
-            repository: '$(dockerRegistry)/movie-search-api'
-            tags: |
-              $(Build.BuildId)
-              latest
+- script: |
+    docker-compose -f docker-compose.yml build
+  displayName: 'Build Docker Images'
+
+- script: |
+    docker-compose -f docker-compose.yml up -d
+  displayName: 'Run Docker Containers'
+
+- script: |
+    docker-compose ps
+  displayName: 'List Running Containers'
+
+- script: |
+    docker-compose down
+  displayName: 'Stop and Remove Containers'
